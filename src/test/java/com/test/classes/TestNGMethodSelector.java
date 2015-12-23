@@ -3,39 +3,40 @@ package com.test.classes;
 import org.testng.annotations.Test;
 public class TestNGMethodSelector extends BaseTest{
 
+	
 
 	@Test
 	public static void methodOne() {
-		System.err.println("This is methodOneTestNGClass");
+		System.out.println("*******This is methodOneTestNGClass*******" + "Command line hello world. Thread id = " + Thread.currentThread().getId());
 	}
 
 	@Test
 	public void methodTwo() {
-		System.err.println("This is methodTwoTestNGClass");
+		System.out.println("This is methodTwoTestNGClass"+"Command line hello world. Thread id = " + Thread.currentThread().getId());
 	}
 
-	@Test
+	/*@Test
 	public void methodThree() {
-		System.err.println("This is methodThreeTestNGClass");
+		System.out.println("This is methodThreeTestNGClass"+ "Command line hello world. Thread id = " + Thread.currentThread().getId());
 	}
 
 	@Test
 	public void methodFour() {
-		System.err.println("This is methodFourTestNGClass");
+		System.out.println("This is methodFourTestNGClass"+"Command line hello world. Thread id = " + Thread.currentThread().getId());
 	}
 
 	@Test
 	public void methodFive() {
-		System.err.println("This is methodFiveTestNGClass");
+		System.out.println("This is methodFiveTestNGClass"+"Command line hello world. Thread id = " + Thread.currentThread().getId());
 	}
 
 	@Test
 	public void methodSix() {
-		System.err.println("This is methodSixTestNGClass");
+		System.out.println("This is methodSixTestNGClass"+"Command line hello world. Thread id = " + Thread.currentThread().getId());
 	}
 
 	@Test
 	public void methodSeven() {
-		System.err.println("This is methodSevenTestNGClass");
-	}
+		System.out.println("This is methodSevenTestNGClass"+"Command line hello world. Thread id = " + Thread.currentThread().getId());
+	}*/
 }
