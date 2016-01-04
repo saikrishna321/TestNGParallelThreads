@@ -19,11 +19,12 @@ import io.appium.java_client.service.local.flags.GeneralServerFlag;
  * /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin in run configuration
  */
 public class AppiumServer {
-	 AppiumDriver<MobileElement> driver;
+    public  AppiumDriver<MobileElement> driver;
 	// CommandPrompt cp = new CommandPrompt();
 	AvailabelPorts ap = new AvailabelPorts();
 	AppiumDriverLocalService appiumDriverLocalService;
-
+    CommandPrompt cp = new CommandPrompt();
+    public AppiumServiceBuilder builder;
 	/**
 	 * start appium with default arguments
 	 */
@@ -37,13 +38,15 @@ public class AppiumServer {
 	 * bootstrap port and device UDID
 	 */
 
+	@SuppressWarnings("static-access")
 	public void appiumServer(String deviceID) throws Exception {
 		System.out.println("Starting Appium Server");
 		System.out.println(deviceID);
 		int port = ap.getPort();
 		int chromePort = ap.getPort();
 		int bootstrapPort = ap.getPort();
-		AppiumServiceBuilder builder = new AppiumServiceBuilder()
+		Thread.currentThread().sleep(5000);
+		builder = new AppiumServiceBuilder()
 				.withAppiumJS(new File("/usr/local/lib/node_modules/appium/bin/appium.js"))
 				.withArgument(GeneralServerFlag.APP,
 						"/Users/saikrisv/Documents/workspace/workspace1/AppiumTest/build/AndroidCalculator.apk")
@@ -56,16 +59,18 @@ public class AppiumServer {
 
 		appiumDriverLocalService = builder.build();
 		appiumDriverLocalService.start();
+		//appiumDriverLocalService.getStdOut();
+		
 		System.out.println(appiumDriverLocalService.isRunning());
 		System.out.println(builder);
-		DesiredCapabilities capabilities = new DesiredCapabilities();
+		/*DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("deviceName", "Android");
 		capabilities.setCapability("platformName", "android");
 		capabilities.setCapability("platformVersion", "5.X");
 		capabilities.setCapability("package","com.android2.calculator3");
 		capabilities.setCapability("appActivity", "com.android2.calculator3.Calculator");
 		Thread.sleep(5000);
-		driver = new AndroidDriver<MobileElement>(appiumDriverLocalService.getUrl(), capabilities);
+		driver = new AndroidDriver<MobileElement>(appiumDriverLocalService.getUrl(), capabilities);*/
 		
 
 	}
@@ -78,10 +83,28 @@ public class AppiumServer {
 	public void destroyAppiumNode() {
 		appiumDriverLocalService.stop();
 	}
+	
+	public void startAppium()throws Exception
+	{
+		// start appium server
+		int port = ap.getPort();
+		int chromePort = ap.getPort();
+		int bootstrapPort = ap.getPort();				
+		String command = "appium --session-override -p "+port+" --chromedriver-port "+chromePort+" -bp "+bootstrapPort;
+		System.out.println(command);
+		String output = cp.runCommand(command);
+		System.out.println(output);
+		
+		if(output.contains("not"))
+		{
+			System.out.println("\nAppium is not installed");
+			System.exit(0);
+		}
+		
+	}
 
-//	public static void main(String[] arg) throws Exception {
-//		AppiumServer appiumManager = new AppiumServer();
-//		appiumManager.appiumServer("192.168.56.101:5555","");
-//		appiumManager.destroyAppiumNode();
-//	}
+	public static void main(String[] arg) throws Exception {
+		AppiumServer appiumManager = new AppiumServer();
+		appiumManager.startAppium();
+	}
 }

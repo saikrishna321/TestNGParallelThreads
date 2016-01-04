@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="3" name="Suite" parallel=methods verbose="1">
+	<test name="Test">
+		<classes>
+			<class name="com.test.classes.TestNGMethodSelector">
+				<methods>
+					<include name="methodTwo" />
+					<include name="methodOne" />
+					<include name="methodThree" />
+					<include name="methodFour" />
+					<include name="methodFive" />
+					<include name="methodSix" />
+				</methods>
+			</class>
+			<class name="com.test.classes.DemoClassWithManyMethodsTest">
+				<methods>
+					<include name="methodOne_1" />
+					<include name="methodTwo_2" />
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
