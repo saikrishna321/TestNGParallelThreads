@@ -24,7 +24,7 @@ public class AppiumServer {
 	AvailabelPorts ap = new AvailabelPorts();
 	AppiumDriverLocalService appiumDriverLocalService;
     CommandPrompt cp = new CommandPrompt();
-    public AppiumServiceBuilder builder;
+    public AppiumServiceBuilder builder = new AppiumServiceBuilder();
 	/**
 	 * start appium with default arguments
 	 */
@@ -40,33 +40,38 @@ public class AppiumServer {
 
 	@SuppressWarnings("static-access")
 	public void appiumServer(String deviceID) throws Exception {
-		System.out.println("Starting Appium Server");
-		System.out.println(deviceID);
-		System.out.println("Attempt to get port..");
-		int port = ap.getPort();
-		System.out.println("Port " + port);
-		System.out.println("Attempt to get chrome port..");
-		int chromePort = ap.getPort();
-		System.out.println("Chrome port " + chromePort);
-		System.out.println("Attempt to get bootstrap port..");
-		int bootstrapPort = ap.getPort();
-		System.out.println("Bootstrap port" + bootstrapPort);
-		Thread.currentThread().sleep(5000);
+		synchronized (builder) {
+			if (appiumDriverLocalService == null) {
+				System.out.println("Starting Appium Server");
+				System.out.println(deviceID);
+				System.out.println("Attempt to get port..");
+				int port = ap.getPort();
+				System.out.println("Port " + port);
+				System.out.println("Attempt to get chrome port..");
+				int chromePort = ap.getPort();
+				System.out.println("Chrome port " + chromePort);
+				System.out.println("Attempt to get bootstrap port..");
+				int bootstrapPort = ap.getPort();
+				System.out.println("Bootstrap port" + bootstrapPort);
+				Thread.currentThread().sleep(5000);
 
-		System.out.println("Attempt to start server");
-		builder = new AppiumServiceBuilder()
-				//.withAppiumJS(new File("/usr/local/lib/node_modules/appium/bin/appium.js"))
-				//.withArgument(GeneralServerFlag.APP,
-				//		"/Users/saikrisv/Documents/workspace/workspace1/AppiumTest/build/AndroidCalculator.apk")
-				.withArgument(GeneralServerFlag.LOG_LEVEL, "info")
-				.withArgument(GeneralServerFlag.UIID, deviceID)
-				.withArgument(GeneralServerFlag.CHROME_DRIVER_PORT, Integer.toString(chromePort))
-				.withArgument(AndroidServerFlag.BOOTSTRAP_PORT_NUMBER, Integer.toString(bootstrapPort))
-				.withArgument(GeneralServerFlag.SESSION_OVERRIDE).usingPort(port).withLogFile(new File("Log" + Thread.currentThread().getName() +
+				System.out.println("Attempt to start server");
+				builder.
+						//.withAppiumJS(new File("/usr/local/lib/node_modules/appium/bin/appium.js"))
+						//.withArgument(GeneralServerFlag.APP,
+						//		"/Users/saikrisv/Documents/workspace/workspace1/AppiumTest/build/AndroidCalculator.apk")
+								withArgument(GeneralServerFlag.LOG_LEVEL, "info")
+						.withArgument(GeneralServerFlag.UIID, deviceID)
+						.withArgument(GeneralServerFlag.CHROME_DRIVER_PORT, Integer.toString(chromePort))
+						.withArgument(AndroidServerFlag.BOOTSTRAP_PORT_NUMBER, Integer.toString(bootstrapPort))
+						.withArgument(GeneralServerFlag.SESSION_OVERRIDE).usingPort(port).withLogFile(new File("Log" + Thread.currentThread().getName() +
 						Thread.currentThread().getId()));
-		/* and so on */;
+		/* and so on */
+				;
 
-		appiumDriverLocalService = builder.build();
+				appiumDriverLocalService = builder.build();
+			}
+		}
 		appiumDriverLocalService.start();
 		System.out.println("Server has been started");
 		//appiumDriverLocalService.getStdOut();
