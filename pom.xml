@@ -22,14 +22,19 @@
 			<version>0.9.10</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.appium</groupId>
+			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>881294d978</version>
+			<version>5.0.0-BETA4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.im4java</groupId>
 			<artifactId>im4java</artifactId>
 			<version>1.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.11.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
